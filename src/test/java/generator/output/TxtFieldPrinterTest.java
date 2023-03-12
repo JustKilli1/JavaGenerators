@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TxtFieldPrinterTest {
 
     String descLabelName = "Test Output Field";
+    String testPrint = "Test";
 
     @Test
     void shouldChangeLabelText() {
@@ -42,7 +43,7 @@ class TxtFieldPrinterTest {
         TxtFieldPrinter printer = new TxtFieldPrinter(descLabelName);
         List<JComponent> view = printer.buildView();
         JTextField textField = (JTextField)view.get(1);
-        printer.println("Test", textField);
-        assertTrue(textField.getText().equals("Test"));
+        printer.println(testPrint, textField);
+        assertTrue(textField.getText().equals(testPrint));
     }
 }
