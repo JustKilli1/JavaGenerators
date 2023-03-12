@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TxtFieldPrinter implements IOutputPrinter{
+
+    private String descriptionLabelName;
+
+    public TxtFieldPrinter(String descriptionLabelName) {
+        this.descriptionLabelName = descriptionLabelName;
+    }
+
     @Override
     public void println(String value, JComponent... target) {
         if(target == null || target.length != 1) return;
@@ -19,7 +26,7 @@ public class TxtFieldPrinter implements IOutputPrinter{
         List<JComponent> components = new ArrayList<>();
 
         //TODO Make Label Text configurable
-        JLabel lblTxtViewDesc = new JLabel("Password");
+        JLabel lblTxtViewDesc = new JLabel(descriptionLabelName);
         lblTxtViewDesc.setVerticalAlignment(SwingConstants.BOTTOM);
 
         JTextField tfTxtView = new JTextField();
