@@ -1,11 +1,10 @@
 package shared.logging.type;
 
 import shared.logging.LogLevel;
-import shared.logging.LoggingUtils;
+import ui.WindowDesign;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,34 +12,17 @@ import java.util.List;
 public class LoggerTypeDialog {
 
     private JDialog dialog;
+    private WindowDesign design;
     private List<JLabel> messageComponents = new ArrayList<>();
 
-    public LoggerTypeDialog() {
+    public LoggerTypeDialog(WindowDesign design) {
+        this.design = design;
         buildDialog("");
-    }
-
-    private void buildDialog(String title) {
-        dialog = new JDialog();
-        dialog.setTitle(title);
-
-        JPanel panel = new JPanel(new GridLayout(messageComponents.size(), 1));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
-        messageComponents.forEach(panel::add);
-        dialog.add(panel);
-        dialog.setAlwaysOnTop(true);
-        //dialog.setIconImage(new BufferedImage(""));
-        dialog.setModal(true);
-        dialog.pack();
-    }
-
-    private void buildMessageComponents(List<String> message) {
-        message.forEach(msg -> messageComponents.add(new JLabel(msg)));
     }
 
     /**
      * Writes A LogMessage to a File
      * @param message The Message that gets written to the File
-     * @see FileHandler
      * */
     public void logToDialog(LogLevel level, List<String> message) {
         buildMessageComponents(message);
@@ -52,27 +34,42 @@ public class LoggerTypeDialog {
      * Writes A LogMessage to a File
      * @param message The Message that gets written to the File
      * */
-    public void logToConsole(String message) {
-        /*logToConsole(Arrays.asList(message));*/
+    public void logToDialog(LogLevel level, String message) {
+        logToDialog(level, Arrays.asList(message));
     }
 
     /**
-     * Method for Logger to Format a Console Log Message
-     * @param logLevel LogLevel
-     * @param loggerName Name of the calling logger
-     * @param message Custom Message
-     * @param ex occurring Exception
-     * @return Formatted LogMessage
-     * {@link LogLevel}
+     * Build the Dialog
+     * @param title Title of the Dialog
      * */
-    public static String formatMessage(LogLevel logLevel, String loggerName, String message, Exception ex) {
-        String messageMSG = message == null ? "" : message;
-        String exceptionMSG = ex == null ? "" : "\nException: " + LoggingUtils.getStackTraceAsStr(ex);
+    private void buildDialog(String title) {
+        dialog = new JDialog();
+        dialog.setTitle(title);
 
-        return "[" + loggerName + "]" +
-                "[" + logLevel.getName() + "]: " +
-                messageMSG +
-                exceptionMSG;
+        JPanel panel = new JPanel(new GridLayout(messageComponents.size(), 1));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+        panel.setBackground(design.getBackgroundColor());
+        messageComponents.forEach(panel::add);
+        dialog.add(panel);
+        dialog.setAlwaysOnTop(true);
+        //dialog.setIconImage(new BufferedImage(""));
+        dialog.setModal(true);
+        dialog.pack();
+    }
+
+    /**
+     * Build the {@code messageComponents} List
+     * @param message Messages that get build
+     * */
+    private void buildMessageComponents(List<String> message) {
+
+        message.forEach(msg -> {
+            JLabel label = new JLabel(msg);
+            label.setBackground(design.getBackgroundComponents());
+            label.setForeground(design.getTextColor());
+            label.setFont(design.getTextFont());
+            messageComponents.add(label);
+        });
     }
 
 }
