@@ -31,9 +31,9 @@ public interface IOutputPrinter {
 
     /**
      * Get all Components needed for this Generator Output to function properly
-     * @return All Components needed for this Generator Output to function properly
+     * @return All Components needed for this Generator Output to function properly in a JPanel
      * */
-    List<JComponent> getView();
+   JPanel getView();
 
 
 }

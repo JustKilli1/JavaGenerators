@@ -1,6 +1,7 @@
 package generator.output;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,11 +39,11 @@ public class TxtFieldPrinter implements IOutputPrinter{
     }
 
     @Override
-    public List<JComponent> getView() {
-        List<JComponent> components = new ArrayList<>();
-        components.add(lblTxtViewDesc);
-        components.add(tfTxtView);
-        return components;
+    public JPanel getView() {
+        JPanel view = new JPanel(new BorderLayout(10, 10));
+        view.add(lblTxtViewDesc, BorderLayout.NORTH);
+        view.add(tfTxtView, BorderLayout.CENTER);
+        return view;
     }
 
     private List<JComponent> buildView() {

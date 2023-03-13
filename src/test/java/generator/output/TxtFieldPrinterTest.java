@@ -16,33 +16,33 @@ class TxtFieldPrinterTest {
     @Test
     void shouldChangeLabelText() {
         TxtFieldPrinter printer = new TxtFieldPrinter(descLabelName);
-        JLabel label = (JLabel) printer.getView().get(0);
+        JLabel label = (JLabel) printer.getView().getComponent(0);
         assertEquals(descLabelName, label.getText());
     }
 
     @Test
     void shouldReturnTwoComponents() {
         TxtFieldPrinter printer = new TxtFieldPrinter(descLabelName);
-        assertEquals(2, printer.getView().size());
+        assertEquals(2, printer.getView().getComponents().length);
     }
 
     @Test
     void shouldReturnLabelAtIndexZero() {
         TxtFieldPrinter printer = new TxtFieldPrinter(descLabelName);
-        assertTrue(printer.getView().get(0) instanceof JLabel);
+        assertTrue(printer.getView().getComponent(0) instanceof JLabel);
     }
 
     @Test
     void shouldReturnTextFieldAtIndexOne() {
         TxtFieldPrinter printer = new TxtFieldPrinter(descLabelName);
-        assertTrue(printer.getView().get(1) instanceof JTextField);
+        assertTrue(printer.getView().getComponent(1) instanceof JTextField);
     }
 
     @Test
     void shouldPrintTextToTextField() {
         TxtFieldPrinter printer = new TxtFieldPrinter(descLabelName);
-        List<JComponent> view = printer.getView();
-        JTextField textField = (JTextField)view.get(1);
+        JPanel view = printer.getView();
+        JTextField textField = (JTextField)view.getComponent(1);
         printer.println(testPrint);
         assertTrue(textField.getText().equals(testPrint));
     }
