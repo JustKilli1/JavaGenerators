@@ -4,16 +4,18 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class WindowDesign {
-    private Color backgroundColor, backgroundComponents, headerColor, textColor, caretColor;
+    private Color backgroundColor, backgroundComponents, headerColor, textColor, caretColor, selectionBackground, selectionForeground;
     private Font headerFont, textFont;
     private Border border;
 
-    public WindowDesign(Color backgroundColor, Color backgroundComponents, Color headerColor, Color textColor, Color caretColor, Font headerFont, Font textFont, Border border) {
+    public WindowDesign(Color backgroundColor, Color backgroundComponents, Color headerColor, Color textColor, Color caretColor, Color selectionBackground, Color selectionForeground, Font headerFont, Font textFont, Border border) {
         this.backgroundColor = backgroundColor;
         this.backgroundComponents = backgroundComponents;
         this.headerColor = headerColor;
         this.textColor = textColor;
         this.caretColor = caretColor;
+        this.selectionBackground = selectionBackground;
+        this.selectionForeground = selectionForeground;
         this.headerFont = headerFont;
         this.textFont = textFont;
         this.border = border;
@@ -87,4 +89,19 @@ public class WindowDesign {
         this.caretColor = caretColor;
     }
 
+    public Color getSelectionBackground() {
+        return selectionBackground;
+    }
+
+    public void setSelectionBackground(Color selectionBackground) {
+        this.selectionBackground = selectionBackground;
+    }
+
+    public Color getSelectionForeground() {
+        return selectionForeground;
+    }
+
+    public void setSelectionForeground(Color selectionForeground) {
+        this.selectionForeground = selectionForeground;
+    }
 }
