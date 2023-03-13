@@ -43,7 +43,7 @@ class TxtFieldPrinterTest {
         TxtFieldPrinter printer = new TxtFieldPrinter(descLabelName);
         List<JComponent> view = printer.buildView();
         JTextField textField = (JTextField)view.get(1);
-        printer.println(testPrint, textField);
+        printer.println(testPrint);
         assertTrue(textField.getText().equals(testPrint));
     }
 }
