@@ -6,6 +6,8 @@ import shared.logging.LoggingUtils;
 import shared.logging.files.FileHandler;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,7 +59,10 @@ public class LoggerTypeFile {
     public static String formatMessage(LogLevel logLevel, String loggerName, List<String> message, Exception ex) {
         String messageMSG = message == null ? "" : "\n" + getMessageStr(message);
         String exceptionMSG = ex == null ? "" : "\nException: " + LoggingUtils.getStackTraceAsStr(ex);
-        return "Level: " + logLevel.getName() + "\n" +
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return "----------------------[" + currentDateTime.format(formatter) + "]----------------------\n" +
+                "Level: " + logLevel.getName() + "\n" +
                 "Logger Name: " + loggerName +
                 messageMSG +
                 exceptionMSG;

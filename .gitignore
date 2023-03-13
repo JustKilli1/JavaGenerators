@@ -1,5 +1,6 @@
 # Intellij
 target/
+Logs/
 .idea/
 *.iml
 *.iws

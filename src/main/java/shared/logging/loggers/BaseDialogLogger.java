@@ -17,7 +17,8 @@ public class BaseDialogLogger extends LoggerTypeDialog implements ILogger {
 
     @Override
     public void log(LogLevel logLevel, List<String> message, Exception ex) {
-        //Ignore
+        //Ignore Exception ex
+        logToDialog(logLevel, message);
     }
 
     @Override
@@ -27,17 +28,19 @@ public class BaseDialogLogger extends LoggerTypeDialog implements ILogger {
 
     @Override
     public void log(LogLevel logLevel, String message, Exception ex) {
-        //Ignore
+        //Ignore Exception ex
+        log(logLevel, Arrays.asList(message), ex);
     }
 
     @Override
     public void log(LogLevel logLevel, String message) {
-        log(logLevel, message);
+        log(logLevel, Arrays.asList(message));
     }
 
     @Override
     public void log(LogLevel logLevel, Exception ex) {
-        //Ignore
+        //Ignore ex
+        log(logLevel, "Es ist ein fehler aufgetreten");
     }
 
     @Override
