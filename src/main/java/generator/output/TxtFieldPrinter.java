@@ -14,6 +14,7 @@ public class TxtFieldPrinter implements IOutputPrinter{
 
     public TxtFieldPrinter(String descriptionLabelName) {
         this.descriptionLabelName = descriptionLabelName;
+        buildView();
     }
 
     @Override
@@ -37,7 +38,14 @@ public class TxtFieldPrinter implements IOutputPrinter{
     }
 
     @Override
-    public List<JComponent> buildView() {
+    public List<JComponent> getView() {
+        List<JComponent> components = new ArrayList<>();
+        components.add(lblTxtViewDesc);
+        components.add(tfTxtView);
+        return components;
+    }
+
+    private List<JComponent> buildView() {
         List<JComponent> components = new ArrayList<>();
 
         lblTxtViewDesc = new JLabel(descriptionLabelName);
@@ -45,14 +53,6 @@ public class TxtFieldPrinter implements IOutputPrinter{
         tfTxtView = new JTextField();
         tfTxtView.setEditable(false);
 
-        components.add(lblTxtViewDesc);
-        components.add(tfTxtView);
-        return components;
-    }
-
-    @Override
-    public List<JComponent> getView() {
-        List<JComponent> components = new ArrayList<>();
         components.add(lblTxtViewDesc);
         components.add(tfTxtView);
         return components;

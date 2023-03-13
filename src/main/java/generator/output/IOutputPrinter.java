@@ -30,11 +30,9 @@ public interface IOutputPrinter {
     void print(String value);
 
     /**
-     * Build all Components needed for this Generator Output to function properly
+     * Get all Components needed for this Generator Output to function properly
      * @return All Components needed for this Generator Output to function properly
      * */
-    List<JComponent> buildView();
-
     List<JComponent> getView();
 
 
