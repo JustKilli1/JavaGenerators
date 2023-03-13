@@ -1,7 +1,9 @@
 package base;
 
 import shared.logging.ILogger;
+import shared.logging.LogCategory;
 import shared.logging.LogLevel;
+import shared.logging.loggergroups.LoggerGroupDialogFile;
 import shared.logging.loggers.BaseDialogLogger;
 import shared.logging.type.LoggerTypeDialog;
 import ui.windows.MainWindow;
@@ -17,7 +19,7 @@ public class Main {
         WindowDesign design = buildDesign();
         MainWindow window = new MainWindow(design);
         window.setVisible(true);
-        ILogger loggerDialog = new BaseDialogLogger("Test");
+        ILogger loggerDialog = new LoggerGroupDialogFile("Test Group Logger", LogCategory.SYSTEM, "GroupTestLoggerFile");
         loggerDialog.log(LogLevel.INFO, Arrays.asList("Hello I'm Dave it's very ", "nice to meet you"), null);
     }
 

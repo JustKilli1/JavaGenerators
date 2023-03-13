@@ -21,7 +21,7 @@ public class TestGenerator implements IGenerator {
     }
 
     @Override
-    public IOutputPrinter getOutputWriter() {
+    public IOutputPrinter getOutputPrinter() {
         return null;
     }
 
