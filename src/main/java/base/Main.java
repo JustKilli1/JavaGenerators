@@ -2,6 +2,7 @@ package base;
 
 import shared.logging.LogLevel;
 import shared.logging.type.LoggerTypeDialog;
+import ui.MainWindow;
 import ui.RoundBorder;
 import ui.WindowDesign;
 
@@ -12,6 +13,8 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
         WindowDesign design = buildDesign();
+        MainWindow window = new MainWindow(design);
+        window.setVisible(true);
         LoggerTypeDialog loggerTypeDialog = new LoggerTypeDialog(design);
         loggerTypeDialog.logToDialog(LogLevel.INFO, Arrays.asList("Hello I'm Dave it's very ", "nice to meet you"));
     }
