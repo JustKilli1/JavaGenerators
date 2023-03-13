@@ -3,6 +3,7 @@ package ui;
 import generator.IGenerator;
 import generator.output.IOutputPrinter;
 
+import javax.swing.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TestGenerator implements IGenerator {
@@ -21,6 +22,11 @@ public class TestGenerator implements IGenerator {
 
     @Override
     public IOutputPrinter getOutputWriter() {
+        return null;
+    }
+
+    @Override
+    public JPanel getView() {
         return null;
     }
 }

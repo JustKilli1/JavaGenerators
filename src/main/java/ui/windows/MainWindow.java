@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
 
-    private WindowDesign design;
+    private static WindowDesign design;
     private JPanel pnlMain, pnlGeneratorList, pnlGeneratorView, pnlNorth, pnlEast, pnlSouth;
     private JTabbedPane tpGeneratorView;
     private JList<IGenerator> lGenerators;
@@ -79,11 +79,13 @@ public class MainWindow extends JFrame {
         lGenerators.setForeground(design.getTextColor());
         lGenerators.setSelectionBackground(design.getSelectionBackground());
         lGenerators.setSelectionForeground(design.getSelectionForeground());
-        lGenerators.setBorder(design.getBorder());
 
         tpGeneratorView.setBackground(design.getBackgroundColor());
 
         spGeneratorsContainer.setBackground(design.getBackgroundColor());
+        spGeneratorsContainer.setBorder(design.getBorder());
+        spGeneratorsContainer.getHorizontalScrollBar().setBackground(design.getBackgroundComponents());
+        spGeneratorsContainer.getVerticalScrollBar().setBackground(design.getBackgroundComponents());
     }
 
     public void changeDesign(WindowDesign design) {
@@ -94,4 +96,7 @@ public class MainWindow extends JFrame {
         generatorsListModel.add(generatorsListModel.getSize(), generator);
     }
 
+    public static WindowDesign getDesign() {
+        return design;
+    }
 }

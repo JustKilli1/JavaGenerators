@@ -1,5 +1,6 @@
 package base;
 
+import shared.logging.ILogger;
 import shared.logging.LogLevel;
 import shared.logging.type.LoggerTypeDialog;
 import ui.windows.MainWindow;
@@ -28,7 +29,7 @@ public class Main {
         design.setCaretColor(Color.WHITE);
         design.setHeaderColor(Color.WHITE);
         design.setTextColor(Color.WHITE);
-        design.setBorder(new RoundBorder(new Color(47, 51, 79), 5, 5));
+        design.setBorder(new RoundBorder(design.getBackgroundComponents(), 5, 5));
         design.setTextFont(new Font("Cascadia Code" , Font.PLAIN, 12));
         design.setHeaderFont(new Font("Cascadia Code", Font.BOLD, 16));
         return design;

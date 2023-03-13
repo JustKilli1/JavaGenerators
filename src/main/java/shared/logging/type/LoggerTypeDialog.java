@@ -1,6 +1,7 @@
 package shared.logging.type;
 
 import shared.logging.LogLevel;
+import ui.windows.MainWindow;
 import ui.windows.WindowDesign;
 
 import javax.swing.*;
@@ -15,8 +16,8 @@ public class LoggerTypeDialog {
     private WindowDesign design;
     private List<JLabel> messageComponents = new ArrayList<>();
 
-    public LoggerTypeDialog(WindowDesign design) {
-        this.design = design;
+    public LoggerTypeDialog() {
+        this.design = MainWindow.getDesign();
         buildDialog("");
     }
 
