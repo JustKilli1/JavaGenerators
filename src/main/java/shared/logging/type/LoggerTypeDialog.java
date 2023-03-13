@@ -1,7 +1,7 @@
 package shared.logging.type;
 
 import shared.logging.LogLevel;
-import ui.WindowDesign;
+import ui.windows.WindowDesign;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +62,6 @@ public class LoggerTypeDialog {
      * @param message Messages that get build
      * */
     private void buildMessageComponents(List<String> message) {
-
         message.forEach(msg -> {
             JLabel label = new JLabel(msg);
             label.setBackground(design.getBackgroundComponents());

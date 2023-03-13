@@ -2,9 +2,9 @@ package base;
 
 import shared.logging.LogLevel;
 import shared.logging.type.LoggerTypeDialog;
-import ui.MainWindow;
-import ui.RoundBorder;
-import ui.WindowDesign;
+import ui.windows.MainWindow;
+import ui.components.RoundBorder;
+import ui.windows.WindowDesign;
 
 import java.awt.*;
 import java.util.Arrays;

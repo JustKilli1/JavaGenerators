@@ -1,11 +1,10 @@
-package ui;
+package ui.windows;
 
 import generator.IGenerator;
-import generator.output.TxtFieldPrinter;
+import ui.TestGenerator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class MainWindow extends JFrame {
 

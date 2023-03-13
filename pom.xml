@@ -6,7 +6,7 @@
 
     <groupId>base</groupId>
     <artifactId>JavaGenerators</artifactId>
-    <version>0.0.5-Development</version>
+    <version>0.1.0-Development</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
