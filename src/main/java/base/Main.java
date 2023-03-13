@@ -2,6 +2,7 @@ package base;
 
 import shared.logging.ILogger;
 import shared.logging.LogLevel;
+import shared.logging.loggers.BaseDialogLogger;
 import shared.logging.type.LoggerTypeDialog;
 import ui.windows.MainWindow;
 import ui.components.RoundBorder;
@@ -16,8 +17,8 @@ public class Main {
         WindowDesign design = buildDesign();
         MainWindow window = new MainWindow(design);
         window.setVisible(true);
-        LoggerTypeDialog loggerTypeDialog = new LoggerTypeDialog(design);
-        loggerTypeDialog.logToDialog(LogLevel.INFO, Arrays.asList("Hello I'm Dave it's very ", "nice to meet you"));
+        ILogger loggerDialog = new BaseDialogLogger("Test");
+        loggerDialog.log(LogLevel.INFO, Arrays.asList("Hello I'm Dave it's very ", "nice to meet you"), null);
     }
 
     private static WindowDesign buildDesign() {
