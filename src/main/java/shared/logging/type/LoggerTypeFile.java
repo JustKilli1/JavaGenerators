@@ -1,9 +1,9 @@
 package shared.logging.type;
 
-import net.marscraft.general.logging.LogCategory;
-import net.marscraft.general.logging.LogLevel;
-import net.marscraft.general.logging.LoggingUtils;
-import net.marscraft.general.logging.files.FileHandler;
+import shared.logging.LogCategory;
+import shared.logging.LogLevel;
+import shared.logging.LoggingUtils;
+import shared.logging.files.FileHandler;
 
 import java.io.IOException;
 import java.util.Arrays;
