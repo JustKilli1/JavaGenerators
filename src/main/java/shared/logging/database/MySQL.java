@@ -1,5 +1,9 @@
 package shared.logging.database;
 
+import shared.logging.ILogger;
+import shared.logging.LogLevel;
+import shared.logging.files.FileHandler;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,54 +14,66 @@ import java.util.Properties;
  * Class that loads the Database Driver and establishes a Connection with the Database.
  * */
 public class MySQL {
-    private String host = "localhost";
-    private String port = "3306";
-    private String database = "";
-    private String username = "root";
-    private String password = "";
-    private Connection con;
+    private ILogger logger;
+    private String host, port, database, username, password;
+    private Connection databaseCon;
 
-    public MySQL() {
+    public MySQL(ILogger logger) {
+        this.logger = logger;
+        loadConfig();
+    }
+
+    public void connect() {
+        if(!isConnected()) {
+            try {
+                logger.log(LogLevel.INFO, "Connect to Database...");
+                databaseCon = DriverManager.getConnection("jdbc:mysql://" +
+                                host +
+                                ":" + port +
+                                "/" + database +
+                                "?autoReconnect=true&useSSL=false",
+                        username, password);
+                logger.log(LogLevel.INFO, "Database connection established.");
+            } catch(Exception ex) {
+                logger.log(LogLevel.ERROR, "Could not Connect to Database", ex);
+            }
+        }
+    }
+
+    public void disconnect() {
+        if(isConnected()) {
+            try {
+                logger.log(LogLevel.INFO, "Disconnect...");
+                databaseCon.close();
+                logger.log(LogLevel.INFO, "Disconnected");
+            } catch(Exception ex) {
+                logger.log(LogLevel.WARN, "Could not Disconnect properly from Database.");
+            }
+        }
+    }
+
+    public boolean isConnected() {
+        return databaseCon != null;
+    }
+
+    public Connection getDatabaseCon() { return databaseCon; }
+
+    private boolean loadConfig() {
         try {
+            new FileHandler("mysql_config.properties").createFileWithDirectorys();
+            logger.log(LogLevel.INFO, "Loading MySQL Config File...");
             Properties prop = new Properties();
-            prop.load(new FileReader("config.properties"));
+            prop.load(new FileReader("mysql_config.properties"));
             port = prop.getProperty("db.port", "3306");
             host = prop.getProperty("db.host", "localhost");
             username = prop.getProperty("db.user");
             password = prop.getProperty("db.pass");
             database = prop.getProperty("db.database");
-        } catch(IOException e) {
-            throw new RuntimeException(e);
+            logger.log(LogLevel.INFO, "MySQL Config File loaded.");
+            return true;
+        } catch(IOException ex) {
+            logger.log(LogLevel.INFO, "Could not load MySQL Config File.");
+            return false;
         }
-    }
-
-    public void connect() {
-        if (!this.isConnected()) {
-            try {
-                this.con = DriverManager.getConnection("jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database + "?autoReconnect=true&useSSL=false", this.username, this.password);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-        }
-    }
-
-    public void disconnect() {
-        if (this.isConnected()) {
-            try {
-                this.con.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-        }
-    }
-
-    public boolean isConnected() {
-        return this.con != null;
-    }
-
-    public Connection getConnection() {
-        return this.con;
     }
 }
