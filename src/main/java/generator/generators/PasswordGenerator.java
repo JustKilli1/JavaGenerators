@@ -3,12 +3,13 @@ package generator.generators;
 import generator.IGenerator;
 import generator.output.IOutputPrinter;
 import generator.output.TxtAreaPrinter;
-import generator.output.TxtFieldPrinter;
 import shared.Utils;
 import ui.windows.WindowDesign;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +23,10 @@ public class PasswordGenerator implements IGenerator<String> {
     private int passwordLength;
 
     private final String name = "Password Generator";
-    private JPanel view, pnlPasswordLength, pnlSpecialCharacter;
-    private JLabel lblPasswordLengthDesc, lblSpecialCharsDesc;
+    private JPanel view, pnlPasswordLength, pnlSpecialCharacter, pnlPasswordAmount;
+    private JLabel lblPasswordLengthDesc, lblPasswordAmountDesc, lblSpecialCharsDesc;
     private JSlider sPasswordLength;
-    private JTextField tfSpecialChars;
+    private JTextField tfSpecialChars, tfPasswordAmount;
     private JButton cmdGenerate;
 
     public PasswordGenerator(WindowDesign design, List<IOutputPrinter> outputPrinter) {
@@ -51,7 +52,7 @@ public class PasswordGenerator implements IGenerator<String> {
     }
 
     private void buildView() {
-        view = new JPanel(new GridLayout(3 + outputPrinter.size(), 1, 10, 20));
+        view = new JPanel(new GridLayout(4 + outputPrinter.size(), 1, 10, 20));
         outputPrinter.forEach(printer -> view.add(printer.getView()));
         buildPasswordOptions();
         getCurrentLength();
@@ -64,6 +65,7 @@ public class PasswordGenerator implements IGenerator<String> {
         lblPasswordLengthDesc = new JLabel();
         lblPasswordLengthDesc.setVerticalAlignment(SwingConstants.BOTTOM);
         updatePasswordLengthDesc(20);
+
         sPasswordLength = new JSlider(1, 200, 20);
         sPasswordLength.addChangeListener(event -> updatePasswordLengthDesc());
 
@@ -72,18 +74,28 @@ public class PasswordGenerator implements IGenerator<String> {
         tfSpecialChars = new JTextField();
         tfSpecialChars.setText("!\"§$%&/()=?`{[]}\\+*#',;.:-_<>|");
 
+        lblPasswordAmountDesc = new JLabel("Special Character");
+        lblPasswordAmountDesc.setVerticalAlignment(SwingConstants.BOTTOM);
+        tfPasswordAmount = new JTextField();
+        tfPasswordAmount.setText("1");
+
         cmdGenerate = new JButton("Generate");
-        cmdGenerate.addActionListener(event -> generate());
+        cmdGenerate.addActionListener(event -> generate(getCurrentAmount()));
 
         pnlPasswordLength = new JPanel(new BorderLayout(0, 5));
         pnlPasswordLength.add(lblPasswordLengthDesc, BorderLayout.CENTER);
         pnlPasswordLength.add(sPasswordLength, BorderLayout.SOUTH);
+
+        pnlPasswordAmount = new JPanel(new BorderLayout(0, 5));
+        pnlPasswordAmount.add(lblPasswordAmountDesc, BorderLayout.CENTER);
+        pnlPasswordAmount.add(tfPasswordAmount, BorderLayout.SOUTH);
 
         pnlSpecialCharacter = new JPanel(new BorderLayout(0, 5));
         pnlSpecialCharacter.add(lblSpecialCharsDesc, BorderLayout.CENTER);
         pnlSpecialCharacter.add(tfSpecialChars, BorderLayout.SOUTH);
 
         view.add(pnlPasswordLength);
+        view.add(pnlPasswordAmount);
         view.add(pnlSpecialCharacter);
         view.add(cmdGenerate);
     }
@@ -99,6 +111,10 @@ public class PasswordGenerator implements IGenerator<String> {
     private int getCurrentLength() {
         passwordLength = sPasswordLength.getValue();
         return passwordLength;
+    }
+
+    private int getCurrentAmount() {
+        return Integer.parseInt(tfPasswordAmount.getText());
     }
 
     @Override
