@@ -26,4 +26,6 @@ public interface IGenerator<T> {
      * */
     JPanel getView();
 
+    String getName();
+
 }

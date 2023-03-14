@@ -1,12 +1,13 @@
 package ui.windows;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
 
     private static WindowDesign design;
-    private JPanel pnlMain, pnlGeneratorView, pnlNorth, pnlEast, pnlSouth, pnlWest;
+    private JPanel pnlMain, pnlNorth, pnlEast, pnlSouth, pnlWest;
     private JTabbedPane tpGeneratorView;
 
     public MainWindow(WindowDesign design) {
@@ -56,8 +57,18 @@ public class MainWindow extends JFrame {
         this.design = design;
     }
 
+    public void addGeneratorViewChangeListener(ChangeListener listener) {
+        tpGeneratorView.addChangeListener(listener);
+    }
+
+    public int getSelectedTabIndex() { return tpGeneratorView.getSelectedIndex(); }
+
+    public void addGeneratorView(String name, JPanel pnlGeneratorView) {
+        tpGeneratorView.addTab(name, pnlGeneratorView);
+    }
 
     public static WindowDesign getDesign() {
         return design;
     }
+
 }

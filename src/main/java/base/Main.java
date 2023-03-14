@@ -1,9 +1,12 @@
 package base;
 
+import generator.GeneratorModel;
 import shared.logging.ILogger;
 import shared.logging.LogCategory;
 import shared.logging.LogLevel;
 import shared.logging.loggergroups.LoggerGroupDialogFile;
+import ui.TestGenerator;
+import ui.controller.LoadAllGeneratorsController;
 import ui.windows.MainWindow;
 import ui.components.RoundBorder;
 import ui.windows.WindowDesign;
@@ -16,7 +19,27 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
         WindowDesign design = buildDesign();
+        GeneratorModel model = new GeneratorModel();
+        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new TestGenerator(design));
+        model.generate(0);
+        model.generate(1);
+        model.generate(2);
+        model.generate(3);
+        model.generate(4);
+        model.generate(5);
+        model.generate(6);
+        model.generate(7);
+        model.generate(8);
         MainWindow window = new MainWindow(design);
+        new LoadAllGeneratorsController(window, model);
         window.setVisible(true);
         ILogger loggerDialog = new LoggerGroupDialogFile("Test Group Logger", LogCategory.SYSTEM, "GroupTestLoggerFile");
         loggerDialog.log(LogLevel.INFO, Arrays.asList("Hello I'm Dave it's very ", "nice to meet you"), null);
