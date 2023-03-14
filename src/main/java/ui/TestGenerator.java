@@ -45,6 +45,11 @@ public class TestGenerator implements IGenerator<String> {
     }
 
     @Override
+    public List<String> generate(int amount) {
+        return null;
+    }
+
+    @Override
     public List<IOutputPrinter> getOutputPrinter() {
         return outputPrinter;
     }

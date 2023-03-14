@@ -8,6 +8,7 @@ import ui.windows.WindowDesign;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,6 +17,7 @@ public class PasswordGenerator implements IGenerator<String> {
 
     private List<IOutputPrinter> outputPrinter;
     private char[] alphabet, specialChars;
+    private int passwordLength;
 
     private final String name = "Password Generator";
     private WindowDesign design;
@@ -33,6 +35,11 @@ public class PasswordGenerator implements IGenerator<String> {
         alphabet = Utils.generateAlphabet(false);
         buildView();
         design();
+    }
+
+    public PasswordGenerator(WindowDesign design, int passwordLength) {
+        this(design);
+        this.passwordLength = passwordLength;
     }
 
     private void buildView() {
@@ -80,13 +87,15 @@ public class PasswordGenerator implements IGenerator<String> {
         updatePasswordLengthDesc(getCurrentLength());
     }
 
-    private int getCurrentLength() { return sPasswordLength.getValue(); }
+    private int getCurrentLength() {
+        passwordLength = sPasswordLength.getValue();
+        return passwordLength;
+    }
 
     @Override
     public String generate() {
-        int length = getCurrentLength();
         String password = "";
-        for(int i = 0; i < length; i++) {
+        for(int i = 0; i < passwordLength; i++) {
             char randomChar = getRandomChar();
             if(password.length() > 0) {
                 while(password.toCharArray()[password.length() - 1] == randomChar) {
@@ -97,6 +106,13 @@ public class PasswordGenerator implements IGenerator<String> {
         }
         notifyPrinter(password);
         return password;
+    }
+
+    @Override
+    public List<String> generate(int amount) {
+        List<String> generatedValues = new ArrayList<>();
+        for(int y = 0; y < amount; y++) generatedValues.add(generate());
+        return generatedValues;
     }
 
     private void notifyPrinter(String msg) {
