@@ -1,5 +1,7 @@
 package generator.output;
 
+import ui.windows.WindowDesign;
+
 import javax.swing.*;
 import java.util.List;
 
@@ -34,6 +36,5 @@ public interface IOutputPrinter {
      * @return All Components needed for this Generator Output to function properly in a JPanel
      * */
    JPanel getView();
-
-
+   void changeDesign(WindowDesign design);
 }

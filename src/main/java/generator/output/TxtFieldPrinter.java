@@ -1,5 +1,7 @@
 package generator.output;
 
+import ui.windows.WindowDesign;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -8,14 +10,18 @@ import java.util.List;
 
 public class TxtFieldPrinter implements IOutputPrinter{
 
+    private WindowDesign design;
     private String descriptionLabelName;
+    private JPanel view;
     private JLabel lblTxtViewDesc;
     private JTextField tfTxtView;
 
 
-    public TxtFieldPrinter(String descriptionLabelName) {
+    public TxtFieldPrinter(WindowDesign design, String descriptionLabelName) {
+        this.design = design;
         this.descriptionLabelName = descriptionLabelName;
         buildView();
+        design();
     }
 
     @Override
@@ -46,16 +52,34 @@ public class TxtFieldPrinter implements IOutputPrinter{
         return view;
     }
 
-    private List<JComponent> buildView() {
-        List<JComponent> components = new ArrayList<>();
+    @Override
+    public void changeDesign(WindowDesign design) {
+        this.design = design;
+        design();
+    }
 
+    private void design() {
+        view.setBackground(design.getBackgroundColor());
+
+        lblTxtViewDesc.setFont(design.getTextFont());
+        lblTxtViewDesc.setForeground(design.getTextColor());
+        lblTxtViewDesc.setBackground(design.getBackgroundComponents());
+
+        tfTxtView.setBackground(design.getBackgroundComponents());
+        tfTxtView.setForeground(design.getTextColor());
+        tfTxtView.setFont(design.getTextFont());
+        tfTxtView.setCaretColor(design.getCaretColor());
+        tfTxtView.setBorder(design.getBorder());
+    }
+
+    private void buildView() {
         lblTxtViewDesc = new JLabel(descriptionLabelName);
         lblTxtViewDesc.setVerticalAlignment(SwingConstants.BOTTOM);
         tfTxtView = new JTextField();
         tfTxtView.setEditable(false);
 
-        components.add(lblTxtViewDesc);
-        components.add(tfTxtView);
-        return components;
+        view = new JPanel(new BorderLayout(0, 5));
+        view.add(lblTxtViewDesc, BorderLayout.NORTH);
+        view.add(tfTxtView, BorderLayout.CENTER);
     }
 }

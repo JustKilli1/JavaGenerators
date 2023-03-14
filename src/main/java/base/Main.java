@@ -1,6 +1,7 @@
 package base;
 
 import generator.GeneratorModel;
+import generator.generators.PasswordGenerator;
 import shared.logging.ILogger;
 import shared.logging.LogCategory;
 import shared.logging.LogLevel;
@@ -20,15 +21,17 @@ public class Main {
         System.out.println("Hello world!");
         WindowDesign design = buildDesign();
         GeneratorModel model = new GeneratorModel();
-        model.addGenerator(new TestGenerator(design));
-        model.addGenerator(new TestGenerator(design));
-        model.addGenerator(new TestGenerator(design));
-        model.addGenerator(new TestGenerator(design));
-        model.addGenerator(new TestGenerator(design));
-        model.addGenerator(new TestGenerator(design));
-        model.addGenerator(new TestGenerator(design));
-        model.addGenerator(new TestGenerator(design));
-        model.addGenerator(new TestGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
+        model.addGenerator(new PasswordGenerator(design));
         model.generate(0);
         model.generate(1);
         model.generate(2);
@@ -45,7 +48,7 @@ public class Main {
         loggerDialog.log(LogLevel.INFO, Arrays.asList("Hello I'm Dave it's very ", "nice to meet you"), null);
     }
 
-    private static WindowDesign buildDesign() {
+    public static WindowDesign buildDesign() {
         WindowDesign design = new WindowDesign();
         design.setBackgroundColor(new Color(28, 30, 46));
         design.setBackgroundComponents(new Color(47, 51, 79));

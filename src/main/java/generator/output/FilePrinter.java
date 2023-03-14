@@ -5,6 +5,7 @@ import shared.logging.LogCategory;
 import shared.logging.LogLevel;
 import shared.logging.files.FileHandler;
 import shared.logging.loggergroups.LoggerGroupDialogFile;
+import ui.windows.WindowDesign;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -14,8 +15,10 @@ public class FilePrinter implements IOutputPrinter {
 
     private ILogger logger;
     private FileHandler fileHandler;
+    private WindowDesign design;
 
-    public FilePrinter(String name) {
+    public FilePrinter(WindowDesign design, String name) {
+        this.design = design;
         fileHandler = new FileHandler("out/" + name);
         logger = new LoggerGroupDialogFile("", LogCategory.SYSTEM, "Log_FilePrinter");
     }
@@ -51,5 +54,10 @@ public class FilePrinter implements IOutputPrinter {
     @Override
     public JPanel getView() {
         return null;
+    }
+
+    @Override
+    public void changeDesign(WindowDesign design) {
+        this.design = design;
     }
 }
