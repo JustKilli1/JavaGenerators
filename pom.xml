@@ -6,7 +6,7 @@
 
     <groupId>base</groupId>
     <artifactId>JavaGenerators</artifactId>
-    <version>0.1.1-Development</version>
+    <version>0.1.2-Development</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -20,6 +20,11 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.9.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.1.2</version>
         </dependency>
     </dependencies>
 
