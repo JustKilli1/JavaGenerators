@@ -13,6 +13,7 @@ public class TxtAreaPrinter implements IOutputPrinter{
     private String descriptionLabelName;
     private JPanel view;
     private JLabel lblTxtViewDesc;
+    private JScrollPane spContainer;
     private JTextArea taTxtView;
 
 
@@ -72,7 +73,14 @@ public class TxtAreaPrinter implements IOutputPrinter{
         taTxtView.setForeground(design.getTextColor());
         taTxtView.setFont(design.getTextFont());
         taTxtView.setCaretColor(design.getCaretColor());
-        taTxtView.setBorder(design.getBorder());
+
+        spContainer.setBackground(design.getBackgroundComponents());
+        spContainer.setBorder(design.getBorder());
+        spContainer.getVerticalScrollBar().setBackground(design.getBackgroundColor());
+        spContainer.getVerticalScrollBar().setForeground(design.getBackgroundComponents());
+        spContainer.getHorizontalScrollBar().setBackground(design.getBackgroundColor());
+        spContainer.getHorizontalScrollBar().setForeground(design.getBackgroundComponents());
+
     }
 
     private void buildView() {
@@ -81,8 +89,10 @@ public class TxtAreaPrinter implements IOutputPrinter{
         taTxtView = new JTextArea();
         taTxtView.setEditable(false);
 
+        spContainer = new JScrollPane(taTxtView);
+
         view = new JPanel(new BorderLayout(0, 5));
         view.add(lblTxtViewDesc, BorderLayout.NORTH);
-        view.add(taTxtView, BorderLayout.CENTER);
+        view.add(spContainer, BorderLayout.CENTER);
     }
 }
