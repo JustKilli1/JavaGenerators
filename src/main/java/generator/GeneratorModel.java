@@ -1,5 +1,11 @@
 package generator;
 
+import shared.Utils;
+import shared.logging.ILogger;
+import shared.logging.LogCategory;
+import shared.logging.LogLevel;
+import shared.logging.loggergroups.LoggerGroupDialogFile;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +13,11 @@ import java.util.Optional;
 
 public class GeneratorModel {
 
+    private ILogger logger;
     private List<IGenerator> generators;
 
     public GeneratorModel() {
+        logger = new LoggerGroupDialogFile("ModelLogger", LogCategory.SYSTEM, "Model");
         generators = new ArrayList<>();
     }
 
@@ -40,8 +48,13 @@ public class GeneratorModel {
         return generators;
     }
 
-    public List<IGenerator> loadAllGenerators() {
-        //Not yet implemented
-        return generators;
+    public Optional<List<IGenerator>> loadAllGenerators() {
+        try {
+            generators = Utils.findAllGenerators("generator.generators");
+            return Optional.ofNullable(generators);
+        } catch(Exception ex) {
+            logger.log(LogLevel.ERROR, "Could not load Generators", ex);
+            return Optional.empty();
+        }
     }
 }

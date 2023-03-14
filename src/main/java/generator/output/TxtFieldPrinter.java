@@ -46,9 +46,6 @@ public class TxtFieldPrinter implements IOutputPrinter{
 
     @Override
     public JPanel getView() {
-        JPanel view = new JPanel(new BorderLayout(10, 10));
-        view.add(lblTxtViewDesc, BorderLayout.NORTH);
-        view.add(tfTxtView, BorderLayout.CENTER);
         return view;
     }
 

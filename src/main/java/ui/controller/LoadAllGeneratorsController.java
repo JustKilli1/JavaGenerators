@@ -4,6 +4,7 @@ import generator.GeneratorModel;
 import generator.IGenerator;
 import ui.windows.MainWindow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoadAllGeneratorsController {
@@ -15,7 +16,7 @@ public class LoadAllGeneratorsController {
         this.view = view;
         this.model = model;
 
-        List<IGenerator> generators = this.model.loadAllGenerators();
+        List<IGenerator> generators = this.model.loadAllGenerators().orElse(new ArrayList<>());
         generators.forEach(generator -> view.addGeneratorView(generator.getName(), generator.getView()));
     }
 }
