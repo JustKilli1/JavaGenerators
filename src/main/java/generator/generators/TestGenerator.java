@@ -1,4 +1,4 @@
-package ui;
+package generator.generators;
 
 import generator.IGenerator;
 import generator.output.IOutputPrinter;
@@ -45,7 +45,7 @@ public class TestGenerator implements IGenerator<String> {
     }
 
     @Override
-    public List<String> generate(int amount) {
+    public List<String> generate(long amount) {
         return null;
     }
 

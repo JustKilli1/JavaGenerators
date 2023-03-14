@@ -6,7 +6,6 @@ import shared.logging.ILogger;
 import shared.logging.LogCategory;
 import shared.logging.LogLevel;
 import shared.logging.loggergroups.LoggerGroupDialogFile;
-import ui.TestGenerator;
 import ui.controller.LoadAllGeneratorsController;
 import ui.windows.MainWindow;
 import ui.components.RoundBorder;

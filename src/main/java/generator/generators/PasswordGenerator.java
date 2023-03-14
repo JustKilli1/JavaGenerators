@@ -16,35 +16,35 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PasswordGenerator implements IGenerator<String> {
 
+    private WindowDesign design;
     private List<IOutputPrinter> outputPrinter;
     private char[] alphabet, specialChars;
     private int passwordLength;
 
     private final String name = "Password Generator";
-    private WindowDesign design;
     private JPanel view, pnlPasswordLength, pnlSpecialCharacter;
     private JLabel lblPasswordLengthDesc, lblSpecialCharsDesc;
     private JSlider sPasswordLength;
     private JTextField tfSpecialChars;
     private JButton cmdGenerate;
 
-    public PasswordGenerator(WindowDesign design) {
+    public PasswordGenerator(WindowDesign design, List<IOutputPrinter> outputPrinter) {
+        this.outputPrinter = outputPrinter;
         this.design = design;
-        outputPrinter = Arrays.asList(
-                new TxtFieldPrinter(this.design, "Password"),
-                new TxtFieldPrinter(this.design, "Password"),
-                new TxtFieldPrinter(this.design, "Password"),
-                new TxtFieldPrinter(this.design, "Password"),
-                new TxtFieldPrinter(this.design, "Password"),
-                new TxtFieldPrinter(this.design, "Password"),
-                new TxtFieldPrinter(this.design, "Password"),
-                new TxtAreaPrinter(this.design, "Password")
-        );
         alphabet = Utils.generateAlphabet(false);
         buildView();
         design();
     }
 
+    public PasswordGenerator(WindowDesign design) {
+        this(design, Arrays.asList(
+                new TxtAreaPrinter(design, "Password")
+        ));
+    }
+
+    /**
+     * Constructor mainly used for JUnit Tests
+     * */
     public PasswordGenerator(WindowDesign design, int passwordLength) {
         this(design);
         this.passwordLength = passwordLength;
@@ -118,7 +118,7 @@ public class PasswordGenerator implements IGenerator<String> {
     }
 
     @Override
-    public List<String> generate(int amount) {
+    public List<String> generate(long amount) {
         List<String> generatedValues = new ArrayList<>();
         for(int y = 0; y < amount; y++) generatedValues.add(generate());
         return generatedValues;

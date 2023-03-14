@@ -16,7 +16,7 @@ public interface IGenerator<T> {
      * @return Generated Value
      * */
     T generate();
-    List<T> generate(int amount);
+    List<T> generate(long amount);
 
     /**
      * @return The Output Printer responsible for this Generator
