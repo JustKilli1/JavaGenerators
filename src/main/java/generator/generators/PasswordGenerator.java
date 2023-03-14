@@ -2,6 +2,7 @@ package generator.generators;
 
 import generator.IGenerator;
 import generator.output.IOutputPrinter;
+import generator.output.TxtAreaPrinter;
 import generator.output.TxtFieldPrinter;
 import shared.Utils;
 import ui.windows.WindowDesign;
@@ -30,7 +31,14 @@ public class PasswordGenerator implements IGenerator<String> {
     public PasswordGenerator(WindowDesign design) {
         this.design = design;
         outputPrinter = Arrays.asList(
-                new TxtFieldPrinter(this.design, "Password")
+                new TxtFieldPrinter(this.design, "Password"),
+                new TxtFieldPrinter(this.design, "Password"),
+                new TxtFieldPrinter(this.design, "Password"),
+                new TxtFieldPrinter(this.design, "Password"),
+                new TxtFieldPrinter(this.design, "Password"),
+                new TxtFieldPrinter(this.design, "Password"),
+                new TxtFieldPrinter(this.design, "Password"),
+                new TxtAreaPrinter(this.design, "Password")
         );
         alphabet = Utils.generateAlphabet(false);
         buildView();
@@ -43,9 +51,10 @@ public class PasswordGenerator implements IGenerator<String> {
     }
 
     private void buildView() {
-        view = new JPanel(new GridLayout(4, 1, 10, 20));
+        view = new JPanel(new GridLayout(3 + outputPrinter.size(), 1, 10, 20));
         outputPrinter.forEach(printer -> view.add(printer.getView()));
         buildPasswordOptions();
+        getCurrentLength();
     }
 
     /**
