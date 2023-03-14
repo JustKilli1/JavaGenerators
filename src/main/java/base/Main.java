@@ -4,12 +4,11 @@ import shared.logging.ILogger;
 import shared.logging.LogCategory;
 import shared.logging.LogLevel;
 import shared.logging.loggergroups.LoggerGroupDialogFile;
-import shared.logging.loggers.BaseDialogLogger;
-import shared.logging.type.LoggerTypeDialog;
 import ui.windows.MainWindow;
 import ui.components.RoundBorder;
 import ui.windows.WindowDesign;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
@@ -35,6 +34,7 @@ public class Main {
         design.setBorder(new RoundBorder(design.getBackgroundComponents(), 5, 5));
         design.setTextFont(new Font("Cascadia Code" , Font.PLAIN, 12));
         design.setHeaderFont(new Font("Cascadia Code", Font.BOLD, 16));
+        design.setEmptyBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         return design;
     }
 }

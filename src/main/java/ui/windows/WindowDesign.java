@@ -6,9 +6,9 @@ import java.awt.*;
 public class WindowDesign {
     private Color backgroundColor, backgroundComponents, headerColor, textColor, caretColor, selectionBackground, selectionForeground;
     private Font headerFont, textFont;
-    private Border border;
+    private Border border, emptyBorder;
 
-    public WindowDesign(Color backgroundColor, Color backgroundComponents, Color headerColor, Color textColor, Color caretColor, Color selectionBackground, Color selectionForeground, Font headerFont, Font textFont, Border border) {
+    public WindowDesign(Color backgroundColor, Color backgroundComponents, Color headerColor, Color textColor, Color caretColor, Color selectionBackground, Color selectionForeground, Font headerFont, Font textFont, Border border, Border emptyBorder) {
         this.backgroundColor = backgroundColor;
         this.backgroundComponents = backgroundComponents;
         this.headerColor = headerColor;
@@ -19,6 +19,7 @@ public class WindowDesign {
         this.headerFont = headerFont;
         this.textFont = textFont;
         this.border = border;
+        this.emptyBorder = emptyBorder;
     }
 
     public WindowDesign() {
@@ -103,5 +104,13 @@ public class WindowDesign {
 
     public void setSelectionForeground(Color selectionForeground) {
         this.selectionForeground = selectionForeground;
+    }
+
+    public Border getEmptyBorder() {
+        return emptyBorder;
+    }
+
+    public void setEmptyBorder(Border emptyBorder) {
+        this.emptyBorder = emptyBorder;
     }
 }
