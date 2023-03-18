@@ -8,6 +8,8 @@ import ui.windows.WindowDesign;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,7 +82,7 @@ public class PasswordGenerator implements IGenerator<String> {
         tfPasswordAmount.setText("1");
 
         cmdGenerate = new JButton("Generate");
-        cmdGenerate.addActionListener(event -> generate(getCurrentAmount()));
+        cmdGenerate.addActionListener(new PassGenActionListener());
 
         pnlPasswordLength = new JPanel(new BorderLayout(0, 5));
         pnlPasswordLength.add(lblPasswordLengthDesc, BorderLayout.CENTER);
@@ -170,7 +172,7 @@ public class PasswordGenerator implements IGenerator<String> {
      * Notice that this Method does not check if the array is null
      * */
     private char getRandomSpecialChar() {
-        return specialChars[ThreadLocalRandom.current().nextInt(specialChars.length)];
+        return specialChars[new SecureRandom().nextInt(specialChars.length)];
     }
 
     @Override
@@ -223,5 +225,20 @@ public class PasswordGenerator implements IGenerator<String> {
 
         pnlPasswordLength.setBackground(design.getBackgroundColor());
         pnlSpecialCharacter.setBackground(design.getBackgroundColor());
+    }
+
+    class PassGenActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            StringBuilder amountStr = new StringBuilder(tfPasswordAmount.getText());
+            while(amountStr.length() > 0) {
+                int length = amountStr.length() > 18 ? 18 : amountStr.length();
+                String str = amountStr.substring(0, length);
+                generate(Long.parseLong(str));
+                amountStr.delete(0, length);
+            }
+            //18
+        }
     }
 }
