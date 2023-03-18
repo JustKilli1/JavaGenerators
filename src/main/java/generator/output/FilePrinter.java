@@ -16,9 +16,10 @@ public class FilePrinter implements IOutputPrinter {
     private ILogger logger;
     private FileHandler fileHandler;
     public static final String OUTPUT_DIRECTORY = "out/";
+    public static final String FILE_TYPE = ".txt";
 
     public FilePrinter(String name) {
-        fileHandler = new FileHandler(OUTPUT_DIRECTORY + name);
+        fileHandler = new FileHandler(OUTPUT_DIRECTORY + name + FILE_TYPE);
         logger = new LoggerGroupDialogFile("", LogCategory.SYSTEM, "Log_FilePrinter");
     }
 
@@ -33,7 +34,11 @@ public class FilePrinter implements IOutputPrinter {
 
     @Override
     public void println(String value) {
-        println(Arrays.asList(value));
+        try {
+            fileHandler.write(Arrays.asList(value), true);
+        } catch(Exception ex) {
+            logger.log(LogLevel.ERROR, "Could not Write data to File", ex);
+        }
     }
 
     @Override
@@ -58,5 +63,10 @@ public class FilePrinter implements IOutputPrinter {
     @Override
     public void changeDesign(WindowDesign design) {
 
+    }
+
+    @Override
+    public void clearOutput() {
+        //Ignore
     }
 }
