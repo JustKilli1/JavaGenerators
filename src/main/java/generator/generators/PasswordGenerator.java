@@ -8,8 +8,7 @@ import ui.windows.WindowDesign;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +20,6 @@ public class PasswordGenerator implements IGenerator<String> {
     private List<IOutputPrinter> outputPrinter;
     private char[] alphabet, specialChars;
     private int passwordLength;
-
     private final String name = "Password Generator";
     private JPanel view, pnlPasswordLength, pnlSpecialCharacter, pnlPasswordAmount;
     private JLabel lblPasswordLengthDesc, lblPasswordAmountDesc, lblSpecialCharsDesc;
@@ -50,7 +48,9 @@ public class PasswordGenerator implements IGenerator<String> {
         this(design);
         this.passwordLength = passwordLength;
     }
-
+    /**
+     * Method to build the GUI view
+     * */
     private void buildView() {
         view = new JPanel(new GridLayout(4 + outputPrinter.size(), 1, 10, 20));
         outputPrinter.forEach(printer -> view.add(printer.getView()));
@@ -119,18 +119,18 @@ public class PasswordGenerator implements IGenerator<String> {
 
     @Override
     public String generate() {
-        String password = "";
+        StringBuilder password = new StringBuilder();
         for(int i = 0; i < passwordLength; i++) {
             char randomChar = getRandomChar();
             if(password.length() > 0) {
-                while(password.toCharArray()[password.length() - 1] == randomChar) {
+                while(password.charAt(password.length() - 1) == randomChar) {
                     randomChar = getRandomChar();
                 }
             }
-            password += randomChar;
+            password.append(randomChar);
         }
-        notifyPrinter(password);
-        return password;
+        notifyPrinter(password.toString());
+        return password.toString();
     }
 
     @Override
@@ -151,7 +151,7 @@ public class PasswordGenerator implements IGenerator<String> {
      * */
     private char getRandomChar() {
         if(specialChars != null && specialChars.length > 0)
-            return ThreadLocalRandom.current().nextInt(0, 10) < 4 ? getRandomSpecialChar() : getRandomLetter();
+            return new SecureRandom().nextInt(10) < 4 ? getRandomSpecialChar() : getRandomLetter();
         else return getRandomLetter();
     }
 
@@ -160,7 +160,7 @@ public class PasswordGenerator implements IGenerator<String> {
      * Returns it either as Upper or Lower Case char.
      * */
     private char getRandomLetter() {
-        ThreadLocalRandom random = ThreadLocalRandom.current();
+        SecureRandom random = new SecureRandom();
         char randomChar = alphabet[random.nextInt(alphabet.length)];
         return random.nextInt() % 2 == 0 ? Character.toUpperCase(randomChar) : Character.toLowerCase(randomChar);
     }
