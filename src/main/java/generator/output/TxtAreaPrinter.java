@@ -27,18 +27,16 @@ public class TxtAreaPrinter implements IOutputPrinter{
     @Override
     public void println(List<String> value) {
         for(int i = 0; i < value.size(); i++) {
-            String val = value.get(i);
-            if(i == 0) {
-                println(val);
-                continue;
-            }
-            taTxtView.append("\n" + val);
+            StringBuilder val = new StringBuilder();
+            if(taTxtView.getText().length() != 0) val.append("\n");
+            val.append(value.get(i));
+            taTxtView.append(val.toString());
         }
     }
 
     @Override
     public void println(String value) {
-        taTxtView.setText(value);
+        println(Arrays.asList(value));
     }
 
     @Override
@@ -60,6 +58,11 @@ public class TxtAreaPrinter implements IOutputPrinter{
     public void changeDesign(WindowDesign design) {
         this.design = design;
         design();
+    }
+
+    @Override
+    public void clearOutput() {
+        taTxtView.setText("");
     }
 
     private void design() {

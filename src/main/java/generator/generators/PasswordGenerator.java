@@ -1,6 +1,7 @@
 package generator.generators;
 
 import generator.IGenerator;
+import generator.output.FilePrinter;
 import generator.output.IOutputPrinter;
 import generator.output.TxtAreaPrinter;
 import shared.Utils;
@@ -14,6 +15,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PasswordGenerator implements IGenerator<String> {
@@ -39,7 +41,8 @@ public class PasswordGenerator implements IGenerator<String> {
 
     public PasswordGenerator(WindowDesign design) {
         this(design, Arrays.asList(
-                new TxtAreaPrinter(design, "Password")
+                new TxtAreaPrinter(design, "Password"),
+                new FilePrinter("Passwords")
         ));
     }
 
@@ -55,7 +58,9 @@ public class PasswordGenerator implements IGenerator<String> {
      * */
     private void buildView() {
         view = new JPanel(new GridLayout(4 + outputPrinter.size(), 1, 10, 20));
-        outputPrinter.forEach(printer -> view.add(printer.getView()));
+        outputPrinter.stream()
+                        .filter(printer -> printer.getView() != null)
+                        .forEach(outputPrinter -> view.add(outputPrinter.getView()));
         buildPasswordOptions();
         getCurrentLength();
     }
@@ -137,6 +142,7 @@ public class PasswordGenerator implements IGenerator<String> {
 
     @Override
     public List<String> generate(long amount) {
+        outputPrinter.forEach(printer -> printer.clearOutput());
         List<String> generatedValues = new ArrayList<>();
         for(int y = 0; y < amount; y++) generatedValues.add(generate());
         return generatedValues;
