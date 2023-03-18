@@ -15,8 +15,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class PasswordGenerator implements IGenerator<String> {
 
@@ -238,6 +236,7 @@ public class PasswordGenerator implements IGenerator<String> {
         @Override
         public void actionPerformed(ActionEvent e) {
             StringBuilder amountStr = new StringBuilder(tfPasswordAmount.getText());
+            specialChars = tfSpecialChars.getText().toCharArray();
             while(amountStr.length() > 0) {
                 int length = amountStr.length() > 18 ? 18 : amountStr.length();
                 String str = amountStr.substring(0, length);
