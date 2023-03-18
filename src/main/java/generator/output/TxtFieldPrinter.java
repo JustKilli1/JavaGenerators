@@ -55,6 +55,11 @@ public class TxtFieldPrinter implements IOutputPrinter{
         design();
     }
 
+    @Override
+    public void clearOutput() {
+        tfTxtView.setText("");
+    }
+
     private void design() {
         view.setBackground(design.getBackgroundColor());
 

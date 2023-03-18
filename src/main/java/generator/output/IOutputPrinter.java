@@ -37,4 +37,5 @@ public interface IOutputPrinter {
      * */
    JPanel getView();
    void changeDesign(WindowDesign design);
+   void clearOutput();
 }
