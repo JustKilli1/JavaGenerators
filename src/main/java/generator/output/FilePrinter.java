@@ -15,11 +15,10 @@ public class FilePrinter implements IOutputPrinter {
 
     private ILogger logger;
     private FileHandler fileHandler;
-    private WindowDesign design;
+    public static final String OUTPUT_DIRECTORY = "out/";
 
-    public FilePrinter(WindowDesign design, String name) {
-        this.design = design;
-        fileHandler = new FileHandler("out/" + name);
+    public FilePrinter(String name) {
+        fileHandler = new FileHandler(OUTPUT_DIRECTORY + name);
         logger = new LoggerGroupDialogFile("", LogCategory.SYSTEM, "Log_FilePrinter");
     }
 
@@ -58,6 +57,6 @@ public class FilePrinter implements IOutputPrinter {
 
     @Override
     public void changeDesign(WindowDesign design) {
-        this.design = design;
+
     }
 }
