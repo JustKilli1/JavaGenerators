@@ -15,9 +15,13 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PasswordGenerator implements IGenerator<String> {
 
+    private static ExecutorService passwordGenThreads;
+    private static boolean generateValues;
     private WindowDesign design;
     private List<IOutputPrinter> outputPrinter;
     private char[] alphabet, specialChars;
@@ -25,11 +29,13 @@ public class PasswordGenerator implements IGenerator<String> {
     private final String name = "Password Generator";
     private JPanel view, pnlPasswordLength, pnlSpecialCharacter, pnlPasswordAmount;
     private JLabel lblPasswordLengthDesc, lblPasswordAmountDesc, lblSpecialCharsDesc;
+    private JProgressBar pbGeneratorProgress;
     private JSlider sPasswordLength;
     private JTextField tfSpecialChars, tfPasswordAmount;
     private JButton cmdGenerate;
 
     public PasswordGenerator(WindowDesign design, List<IOutputPrinter> outputPrinter) {
+        generateValues = false;
         this.outputPrinter = outputPrinter;
         this.design = design;
         alphabet = Utils.generateAlphabet(false);
@@ -50,59 +56,6 @@ public class PasswordGenerator implements IGenerator<String> {
     public PasswordGenerator(WindowDesign design, int passwordLength) {
         this(design);
         this.passwordLength = passwordLength;
-    }
-    /**
-     * Method to build the GUI view
-     * */
-    private void buildView() {
-        view = new JPanel(new GridLayout(4 + outputPrinter.size(), 1, 10, 20));
-        outputPrinter.stream()
-                        .filter(printer -> printer.getView() != null)
-                        .forEach(outputPrinter -> view.add(outputPrinter.getView()));
-        buildPasswordOptions();
-        getCurrentLength();
-    }
-
-    /**
-     * Builds the Password Options Components.
-     * */
-    private void buildPasswordOptions() {
-        lblPasswordLengthDesc = new JLabel();
-        lblPasswordLengthDesc.setVerticalAlignment(SwingConstants.BOTTOM);
-        updatePasswordLengthDesc(20);
-
-        sPasswordLength = new JSlider(1, 200, 20);
-        sPasswordLength.addChangeListener(event -> updatePasswordLengthDesc());
-
-        lblSpecialCharsDesc = new JLabel("Special Character");
-        lblSpecialCharsDesc.setVerticalAlignment(SwingConstants.BOTTOM);
-        tfSpecialChars = new JTextField();
-        tfSpecialChars.setText("!\"§$%&/()=?`{[]}\\+*#',;.:-_<>|");
-
-        lblPasswordAmountDesc = new JLabel("Special Character");
-        lblPasswordAmountDesc.setVerticalAlignment(SwingConstants.BOTTOM);
-        tfPasswordAmount = new JTextField();
-        tfPasswordAmount.setText("1");
-
-        cmdGenerate = new JButton("Generate");
-        cmdGenerate.addActionListener(new PassGenActionListener());
-
-        pnlPasswordLength = new JPanel(new BorderLayout(0, 5));
-        pnlPasswordLength.add(lblPasswordLengthDesc, BorderLayout.CENTER);
-        pnlPasswordLength.add(sPasswordLength, BorderLayout.SOUTH);
-
-        pnlPasswordAmount = new JPanel(new BorderLayout(0, 5));
-        pnlPasswordAmount.add(lblPasswordAmountDesc, BorderLayout.CENTER);
-        pnlPasswordAmount.add(tfPasswordAmount, BorderLayout.SOUTH);
-
-        pnlSpecialCharacter = new JPanel(new BorderLayout(0, 5));
-        pnlSpecialCharacter.add(lblSpecialCharsDesc, BorderLayout.CENTER);
-        pnlSpecialCharacter.add(tfSpecialChars, BorderLayout.SOUTH);
-
-        view.add(pnlPasswordLength);
-        view.add(pnlPasswordAmount);
-        view.add(pnlSpecialCharacter);
-        view.add(cmdGenerate);
     }
 
     public void updatePasswordLengthDesc(int newValue) {
@@ -134,7 +87,7 @@ public class PasswordGenerator implements IGenerator<String> {
             }
             password.append(randomChar);
         }
-        notifyPrinter(password.toString());
+        //notifyPrinter(password.toString());
         return password.toString();
     }
 
@@ -142,7 +95,9 @@ public class PasswordGenerator implements IGenerator<String> {
     public List<String> generate(long amount) {
         outputPrinter.forEach(printer -> printer.clearOutput());
         List<String> generatedValues = new ArrayList<>();
-        for(int y = 0; y < amount; y++) generatedValues.add(generate());
+        for(int i = 0; i < amount; i++) {
+            generatedValues.add(generate());
+        }
         return generatedValues;
     }
 
@@ -222,14 +177,91 @@ public class PasswordGenerator implements IGenerator<String> {
         tfSpecialChars.setCaretColor(design.getCaretColor());
         tfSpecialChars.setBorder(design.getBorder());
 
+        lblPasswordAmountDesc.setFont(design.getTextFont());
+        lblPasswordAmountDesc.setForeground(design.getTextColor());
+        lblPasswordAmountDesc.setBackground(design.getBackgroundComponents());
+
+        tfPasswordAmount.setBackground(design.getBackgroundComponents());
+        tfPasswordAmount.setForeground(design.getTextColor());
+        tfPasswordAmount.setFont(design.getTextFont());
+        tfPasswordAmount.setCaretColor(design.getCaretColor());
+        tfPasswordAmount.setBorder(design.getBorder());
+
         cmdGenerate.setBackground(design.getBackgroundComponents());
         cmdGenerate.setForeground(design.getTextColor());
         cmdGenerate.setBorder(design.getBorder());
         cmdGenerate.setFont(design.getHeaderFont());
 
         pnlPasswordLength.setBackground(design.getBackgroundColor());
+        pnlPasswordAmount.setBackground(design.getBackgroundColor());
         pnlSpecialCharacter.setBackground(design.getBackgroundColor());
     }
+
+    /**
+     * Method to build the GUI view
+     * */
+    private void buildView() {
+        view = new JPanel(new GridLayout(5 + outputPrinter.size(), 1, 10, 20));
+        outputPrinter.stream()
+                .filter(printer -> printer.getView() != null)
+                .forEach(outputPrinter -> view.add(outputPrinter.getView()));
+        buildPasswordOptions();
+        getCurrentLength();
+    }
+
+    /**
+     * Builds the Password Options Components.
+     * */
+    private void buildPasswordOptions() {
+        lblPasswordLengthDesc = new JLabel();
+        lblPasswordLengthDesc.setVerticalAlignment(SwingConstants.BOTTOM);
+        updatePasswordLengthDesc(20);
+
+        sPasswordLength = new JSlider(1, 200, 20);
+        sPasswordLength.addChangeListener(event -> updatePasswordLengthDesc());
+
+        lblSpecialCharsDesc = new JLabel("Special Character");
+        lblSpecialCharsDesc.setVerticalAlignment(SwingConstants.BOTTOM);
+        tfSpecialChars = new JTextField();
+        tfSpecialChars.setText("!\"§$%&/()=?`{[]}\\+*#',;.:-_<>|");
+
+        lblPasswordAmountDesc = new JLabel("Password Amount");
+        lblPasswordAmountDesc.setVerticalAlignment(SwingConstants.BOTTOM);
+        tfPasswordAmount = new JTextField();
+        tfPasswordAmount.setText("1");
+
+        cmdGenerate = new JButton("Generate");
+        cmdGenerate.addActionListener(new PassGenActionListener());
+
+        pnlPasswordLength = new JPanel(new BorderLayout(0, 5));
+        pnlPasswordLength.add(lblPasswordLengthDesc, BorderLayout.CENTER);
+        pnlPasswordLength.add(sPasswordLength, BorderLayout.SOUTH);
+
+        pnlPasswordAmount = new JPanel(new BorderLayout(0, 5));
+        pnlPasswordAmount.add(lblPasswordAmountDesc, BorderLayout.CENTER);
+        pnlPasswordAmount.add(tfPasswordAmount, BorderLayout.SOUTH);
+
+        pnlSpecialCharacter = new JPanel(new BorderLayout(0, 5));
+        pnlSpecialCharacter.add(lblSpecialCharsDesc, BorderLayout.CENTER);
+        pnlSpecialCharacter.add(tfSpecialChars, BorderLayout.SOUTH);
+
+        pbGeneratorProgress = new JProgressBar();
+
+        view.add(pnlPasswordLength);
+        view.add(pnlPasswordAmount);
+        view.add(pnlSpecialCharacter);
+        view.add(cmdGenerate);
+        view.add(pbGeneratorProgress);
+    }
+
+    private void changeMaxValueProgressBar(int value) {
+        pbGeneratorProgress.setMaximum(value);
+    }
+
+    private void addValueProgressBar(int value) {
+        pbGeneratorProgress.setValue(pbGeneratorProgress.getValue() + value);
+    }
+
 
     class PassGenActionListener implements ActionListener {
 
@@ -237,13 +269,29 @@ public class PasswordGenerator implements IGenerator<String> {
         public void actionPerformed(ActionEvent e) {
             StringBuilder amountStr = new StringBuilder(tfPasswordAmount.getText());
             specialChars = tfSpecialChars.getText().toCharArray();
-            while(amountStr.length() > 0) {
-                int length = amountStr.length() > 18 ? 18 : amountStr.length();
-                String str = amountStr.substring(0, length);
-                generate(Long.parseLong(str));
-                amountStr.delete(0, length);
+            if(generateValues) {
+                generateValues = false;
+                return;
+            } else {
+                generateValues = true;
             }
-            //18
+            long amount = Long.parseLong(amountStr.toString());
+            changeMaxValueProgressBar(Integer.parseInt(amountStr.toString()));
+            pbGeneratorProgress.setValue(0);
+            int threads = amount / 10 == 0 ? 1 : 10;
+            long amountPerThread = amount / threads;
+            passwordGenThreads = Executors.newFixedThreadPool(threads);
+            for(int i = 0; i < threads; i++) {
+                passwordGenThreads.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(int i = 0; i < amountPerThread && generateValues; i++) {
+                            generate();
+                            addValueProgressBar(1);
+                        }
+                    }
+                });
+            }
         }
     }
 }

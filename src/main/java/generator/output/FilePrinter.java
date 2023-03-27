@@ -38,8 +38,7 @@ public class FilePrinter implements IOutputPrinter {
             fileHandler.write(Arrays.asList(value), true);
         } catch(Exception ex) {
             logger.log(LogLevel.ERROR, "Could not Write data to File", ex);
-        }
-    }
+        }    }
 
     @Override
     public void print(List<String> value) {

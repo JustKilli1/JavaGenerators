@@ -1,4 +1,4 @@
-package shared.logging.database;
+package shared.database;
 
 import shared.logging.ILogger;
 import shared.logging.LogLevel;
